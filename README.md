@@ -1,0 +1,13 @@
+# SDL
+my journey to learn SDL, and C++ along the way
+
+## how to run
+to run SDL programs, you need to have a c++ compiler as well as the SDL library.
+i'm working on these projects using the sublime text editor, and mingw to compile through command prompt.
+
+a great step-by-step tutorial on how to install SDL2 can be found here:
+https://lazyfoo.net/tutorials/SDL/01_hello_SDL/index.php
+
+make sure that you have mingw installed and added to path
+
+a customized run command can be found in RUN.bat, but it would need to be customized depending on where your SDL files are located
