@@ -1,4 +1,3 @@
-#include <SDL.h>
 #include <stdio.h>
 #include <typeinfo>
 #include "graphics.h"
@@ -9,23 +8,25 @@ int SCREEN_HEIGHT = 480;
 const char* CAPTION = "PONG";
 
 
-SDL_Window* setup() {
-	if (SDL_Init(SDL_INIT_VIDEO) < 0 ) {
-		printf("[ERROR] failed to load SDL :: %s\n", SDL_GetError());
-		return NULL;
-	}
+struct interface {
+    SDL_Window* window = NULL;
+    SDL_Renderer* renderer = NULL;
+};
 
-	SDL_Window* window = SDL_CreateWindow(CAPTION, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
-	
-	if (window == NULL)
-		printf("[ERROR] Window could not be created! SDL_Error: %s\n", SDL_GetError());
+interface setup() {
+    interface screen;
+    SDL_Init(SDL_INIT_VIDEO);
+    TTF_Init();
+    screen.window = SDL_CreateWindow(CAPTION, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    screen.renderer = SDL_CreateRenderer(screen.window, -1, SDL_RENDERER_ACCELERATED);
 
-	return window;
+    return screen;
 }
 
 
-void cleanup(SDL_Window* window) {
-	SDL_DestroyWindow(window);  // Destroy window
+void cleanup(interface screen) {
+	SDL_DestroyRenderer(screen.renderer);
+	SDL_DestroyWindow(screen.window);  // Destroy window
 	SDL_Quit();  // Quit SDL subsystems
 }
 
@@ -48,20 +49,18 @@ void handle_keypress(SDL_KeyboardEvent key, bool keys[4], bool down) {
 }
 
 
-void update(SDL_Surface* screenSurface, Paddle* paddle1, Paddle* paddle2) {
-	// highlight #434a54
-	drawRect(screenSurface, NULL, 43, 46, 51);
-	drawRect(screenSurface, createRect(SCREEN_WIDTH / 2, 0, 1, SCREEN_HEIGHT), 67, 74, 84);
+void update(SDL_Renderer* renderer, Paddle* paddle1, Paddle* paddle2, Text* text) {
+	drawRect(renderer, NULL, 43, 46, 51);
+	drawRect(renderer, createRect(SCREEN_WIDTH / 2, 70, 1, SCREEN_HEIGHT), 67, 74, 84);
 
+	paddle1->draw(renderer);
+	paddle2->draw(renderer);
 
-	
-
-	paddle1->draw(screenSurface);
-	paddle2->draw(screenSurface);
+	text->draw();
 }
 
 
-void mainloop(SDL_Window* window, SDL_Surface* screenSurface) {
+void mainloop(interface screen) {
 	bool keys[] = {false, false, false, false};
 
 	Paddle* paddle1 = new Paddle(10, 10, 5, 75, SCREEN_HEIGHT);
@@ -69,9 +68,12 @@ void mainloop(SDL_Window* window, SDL_Surface* screenSurface) {
 
 	int x = 10;
 	int y = 10;
+
+	Text* text = new Text(screen.renderer, (char*) "PONG", 274, 2, 60, 67, 74, 84);
     
-    SDL_Event event;
+    
     bool run = true;
+    SDL_Event event;
     while (run) {
     	SDL_Delay(1);
     	while (SDL_PollEvent(&event)) {
@@ -92,11 +94,15 @@ void mainloop(SDL_Window* window, SDL_Surface* screenSurface) {
             }
     	}
 
+
 		paddle1->move(new bool[2] {keys[0], keys[1]});
 		paddle2->move(new bool[2] {keys[2], keys[3]});
 
-		update(screenSurface, paddle1, paddle2);
-		SDL_UpdateWindowSurface(window);
+		update(screen.renderer, paddle1, paddle2, text);
+
+		SDL_UpdateWindowSurface(screen.window);
+		SDL_RenderPresent(screen.renderer);
+		
     }
 }
 
@@ -104,12 +110,9 @@ void mainloop(SDL_Window* window, SDL_Surface* screenSurface) {
 int main(int argc, char* args[]) {
 	printf("[START] starting program\n");
 
-	SDL_Surface* screenSurface = NULL;  // the surface contained by the window
-	SDL_Window* window = setup();  // the window we'll be rendering to
+	interface screen = setup();
+	mainloop(screen);
 	
-	if (window != NULL)
-		mainloop(window, SDL_GetWindowSurface(window));
-	
-	cleanup(window);
+	cleanup(screen);
 	return 0;
 }

@@ -1,5 +1,4 @@
 #include "Paddle.h"
-#include "graphics.h"
 
 
 Paddle::Paddle(int x, int y, int width, int height, int boundingHeight) {
@@ -22,6 +21,6 @@ void Paddle::move(bool keys[2]) {
 		y = boundingHeight - height;
 }
 
-void Paddle::draw(SDL_Surface* screenSurface) {
-	drawRect(screenSurface, createRect(x, y, width, height), colour[0], colour[1], colour[2]);
+void Paddle::draw(SDL_Renderer* renderer) {
+	drawRect(renderer, createRect(x, y, width, height), colour[0], colour[1], colour[2]);
 }

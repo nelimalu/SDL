@@ -1,7 +1,7 @@
 #ifndef PADDLE_H
 #define PADDLE_H
 
-#include <SDL.h>
+#include "graphics.h"
 
 class Paddle {
 	private:
@@ -17,7 +17,7 @@ class Paddle {
 
 		Paddle(int x, int y, int width, int height, int boundingHeight);
 		void move(bool keys[4]);
-		void draw(SDL_Surface* screenSurface);
+		void draw(SDL_Renderer* renderer);
 };
 
 #endif
