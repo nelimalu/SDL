@@ -1,1 +1,1 @@
-g++ main.cpp graphics.cpp Paddle.cpp -IC:\cpp_libs\SDL\include\SDL2 -LC:\cpp_libs\SDL\lib -IC:\cpp_libs\SDL_ttf\include\SDL2 -LC:\cpp_libs\SDL_ttf\lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf -o run && run
+g++ main.cpp graphics.cpp Paddle.cpp Ball.cpp -IC:\cpp_libs\SDL\include\SDL2 -LC:\cpp_libs\SDL\lib -IC:\cpp_libs\SDL_ttf\include\SDL2 -LC:\cpp_libs\SDL_ttf\lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf -o run && run

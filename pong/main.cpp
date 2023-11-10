@@ -1,7 +1,9 @@
 #include <stdio.h>
-#include <typeinfo>
+#include <stdlib.h>
+#include <time.h>
 #include "graphics.h"
 #include "Paddle.h"
+#include "Ball.h"
 
 int SCREEN_WIDTH = 640;
 int SCREEN_HEIGHT = 480;
@@ -17,6 +19,7 @@ interface setup() {
     interface screen;
     SDL_Init(SDL_INIT_VIDEO);
     TTF_Init();
+    srand(time(0));
     screen.window = SDL_CreateWindow(CAPTION, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     screen.renderer = SDL_CreateRenderer(screen.window, -1, SDL_RENDERER_ACCELERATED);
 
@@ -28,6 +31,10 @@ void cleanup(interface screen) {
 	SDL_DestroyRenderer(screen.renderer);
 	SDL_DestroyWindow(screen.window);  // Destroy window
 	SDL_Quit();  // Quit SDL subsystems
+}
+
+int randint(int min, int max) {
+	return (rand() % (max - min + 1)) + min;
 }
 
 
@@ -49,12 +56,13 @@ void handle_keypress(SDL_KeyboardEvent key, bool keys[4], bool down) {
 }
 
 
-void update(SDL_Renderer* renderer, Paddle* paddle1, Paddle* paddle2, Text* text) {
+void update(SDL_Renderer* renderer, Paddle* paddle1, Paddle* paddle2, Text* text, Ball* ball) {
 	drawRect(renderer, NULL, 43, 46, 51);
 	drawRect(renderer, createRect(SCREEN_WIDTH / 2, 70, 1, SCREEN_HEIGHT), 67, 74, 84);
 
 	paddle1->draw(renderer);
 	paddle2->draw(renderer);
+	ball->draw(renderer);
 
 	text->draw();
 }
@@ -64,7 +72,11 @@ void mainloop(interface screen) {
 	bool keys[] = {false, false, false, false};
 
 	Paddle* paddle1 = new Paddle(10, 10, 5, 75, SCREEN_HEIGHT);
-	Paddle* paddle2 = new Paddle(SCREEN_WIDTH - 20, 10, 5, 75, SCREEN_HEIGHT);
+	Paddle* paddle2 = new Paddle(SCREEN_WIDTH - 15, 10, 5, 75, SCREEN_HEIGHT);
+
+	int angle = randint(0, 359);
+	printf("%d\n", angle);
+	Ball* ball = new Ball(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 5, 1, angle);
 
 	int x = 10;
 	int y = 10;
@@ -97,8 +109,9 @@ void mainloop(interface screen) {
 
 		paddle1->move(new bool[2] {keys[0], keys[1]});
 		paddle2->move(new bool[2] {keys[2], keys[3]});
+		ball->move();
 
-		update(screen.renderer, paddle1, paddle2, text);
+		update(screen.renderer, paddle1, paddle2, text, ball);
 
 		SDL_UpdateWindowSurface(screen.window);
 		SDL_RenderPresent(screen.renderer);
