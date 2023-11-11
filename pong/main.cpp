@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include <random>
 #include <time.h>
 #include "graphics.h"
 #include "Paddle.h"
@@ -19,7 +19,7 @@ interface setup() {
     interface screen;
     SDL_Init(SDL_INIT_VIDEO);
     TTF_Init();
-    srand(time(0));
+
     screen.window = SDL_CreateWindow(CAPTION, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     screen.renderer = SDL_CreateRenderer(screen.window, -1, SDL_RENDERER_ACCELERATED);
 
@@ -34,7 +34,9 @@ void cleanup(interface screen) {
 }
 
 int randint(int min, int max) {
-	return (rand() % (max - min + 1)) + min;
+	std::mt19937 rng(time(0));
+	std::uniform_int_distribution<int> uni(0,359);
+	return uni(rng);
 }
 
 
@@ -76,7 +78,7 @@ void mainloop(interface screen) {
 
 	int angle = randint(0, 359);
 	printf("%d\n", angle);
-	Ball* ball = new Ball(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 5, 1, angle);
+	Ball* ball = new Ball(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 5, 2, angle);
 
 	int x = 10;
 	int y = 10;

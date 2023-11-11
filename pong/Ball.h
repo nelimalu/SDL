@@ -9,10 +9,10 @@ class Ball {
 		int y;
 		int sidelength;
 		int speed;
-		float angle;
+		int angle;
 
 	public:
-		Ball(int x, int y, int sidelength, int speed, float angle);
+		Ball(int x, int y, int sidelength, int speed, int angle);
 		void move();
 		void draw(SDL_Renderer* renderer);
 };
