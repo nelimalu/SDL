@@ -10,7 +10,7 @@ void drawRect(SDL_Renderer* renderer, SDL_Rect* rectangle, int r, int g, int b);
 
 class Text {
 	private:
-		char* text;
+		const char* text;
 		int x;
 		int y;
 		int size;
@@ -21,7 +21,7 @@ class Text {
 		SDL_Renderer* renderer;
 
 	public:
-		Text(SDL_Renderer* renderer, char* text, int x, int y, int size, int r, int g, int b);
+		Text(SDL_Renderer* renderer, const char* text, int x, int y, int size, int r, int g, int b);
 		void draw();
 
 	

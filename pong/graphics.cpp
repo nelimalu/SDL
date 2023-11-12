@@ -17,7 +17,7 @@ void drawRect(SDL_Renderer* renderer, SDL_Rect* rectangle, int r, int g, int b) 
 }
 
 
-Text::Text(SDL_Renderer* renderer, char* text, int x, int y, int size, int r, int g, int b) {
+Text::Text(SDL_Renderer* renderer, const char* text, int x, int y, int size, int r, int g, int b) {
 	this->text = text;
 	this->x = x;
 	this->y = y;

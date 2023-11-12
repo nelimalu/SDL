@@ -58,11 +58,10 @@ void handle_keypress(SDL_KeyboardEvent key, bool keys[4], bool down) {
 }
 
 
-void update(SDL_Renderer* renderer, Paddle* paddle1, Paddle* paddle2, Text* text, Ball* ball, int fps) {
+void update(SDL_Renderer* renderer, Paddle* paddle1, Paddle* paddle2, Text* text, Ball* ball, Text* fps) {
 	drawRect(renderer, NULL, 43, 46, 51);
 	drawRect(renderer, createRect(SCREEN_WIDTH / 2, 70, 1, SCREEN_HEIGHT), 67, 74, 84);
-
-	Text* fps = new Text(screen.renderer, std::to_string(fps).c_str(), 10, 10, 10, 255, 255, 255);
+	fps->draw();
 
 	paddle1->draw(renderer);
 	paddle2->draw(renderer);
@@ -84,19 +83,21 @@ void mainloop(interface screen) {
 	int x = 10;
 	int y = 10;
 
-	Text* text = new Text(screen.renderer, (char*) "PONG", 274, 2, 60, 67, 74, 84);
+	Text* text = new Text(screen.renderer, (const char*) "PONG", 274, 2, 60, 67, 74, 84);
+	Text* fps_text = new Text(screen.renderer, (const char*) "0", 0, SCREEN_HEIGHT - 20, 20, 67, 74, 84);
     
     int frames = 0;
     int prev_time = time(0);
     bool run = true;
     SDL_Event event;
     while (run) {
-    	//SDL_Delay(1);
+    	SDL_Delay(1);
     	
     	frames++;
     	if (prev_time < time(0)) {
     		prev_time = time(0);
-
+    		fps_text = new Text(screen.renderer, (std::to_string(frames) + "fps").c_str(), 0, SCREEN_HEIGHT - 20, 20, 67, 74, 84);
+    		frames = 0;
     	}
 
     	while (SDL_PollEvent(&event)) {
@@ -122,7 +123,7 @@ void mainloop(interface screen) {
 		paddle2->move(new bool[2] {keys[2], keys[3]});
 		ball->move();
 
-		update(screen.renderer, paddle1, paddle2, text, ball);
+		update(screen.renderer, paddle1, paddle2, text, ball, fps_text);
 
 		SDL_UpdateWindowSurface(screen.window);
 		SDL_RenderPresent(screen.renderer);
