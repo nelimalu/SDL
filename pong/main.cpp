@@ -15,11 +15,6 @@ struct interface {
     SDL_Renderer* renderer = NULL;
 };
 
-struct scores {
-	int score1 = 0;
-	int score2 = 0;
-};
-
 interface setup() {
     interface screen;
     SDL_Init(SDL_INIT_VIDEO);
@@ -57,16 +52,17 @@ void handle_keypress(SDL_KeyboardEvent key, bool keys[4], bool down) {
 }
 
 
-void update(SDL_Renderer* renderer, Paddle* paddle1, Paddle* paddle2, Text* text, Ball* ball, Text* fps) {
+void update(SDL_Renderer* renderer, Paddle* paddle1, Paddle* paddle2, Text* text, Ball* ball, Text* fps, Text* score1, Text* score2) {
 	drawRect(renderer, NULL, 43, 46, 51);
 	drawRect(renderer, createRect(SCREEN_WIDTH / 2, 70, 1, SCREEN_HEIGHT), 67, 74, 84);
 	fps->draw();
+	text->draw();
+	score1->draw();
+	score2->draw();
 
 	paddle1->draw(renderer);
 	paddle2->draw(renderer);
 	ball->draw(renderer);
-
-	text->draw();
 }
 
 
@@ -79,12 +75,13 @@ void mainloop(interface screen) {
 	int angle = randint(0, 359);
 	Ball* ball = new Ball(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 5, 0.5, angle);
 
-	int x = 10;
-	int y = 10;
+	int scores[2] = {0, 0}; 
 
 	Text* text = new Text(screen.renderer, (const char*) "PONG", 274, 2, 60, 67, 74, 84);
 	Text* fps_text = new Text(screen.renderer, (const char*) "0", 0, SCREEN_HEIGHT - 20, 20, 67, 74, 84);
-    
+    Text* score1_text = new Text(screen.renderer, (const char*) "0", 50, SCREEN_HEIGHT / 2, 80, 67, 74, 84);
+    Text* score2_text = new Text(screen.renderer, (const char*) "0", SCREEN_WIDTH - 50, SCREEN_HEIGHT / 2, 80, 67, 74, 84);
+
     int frames = 0;
     int prev_time = time(0);
     bool run = true;
@@ -100,7 +97,7 @@ void mainloop(interface screen) {
     	}
 
     	while (SDL_PollEvent(&event)) {
-    		switch (event.type){
+    		switch (event.type) {
                 case SDL_KEYDOWN:
                 	handle_keypress(event.key, keys, true);
                 	break;
@@ -120,9 +117,14 @@ void mainloop(interface screen) {
 
 		paddle1->move(new bool[2] {keys[0], keys[1]});
 		paddle2->move(new bool[2] {keys[2], keys[3]});
-		ball->move(paddle1, paddle2, SCREEN_WIDTH, SCREEN_HEIGHT);
+		ball->move(SCREEN_HEIGHT);
+		int point = ball->handle_collision(paddle1, paddle2, SCREEN_WIDTH);
+		if (point == 0)
+			score1_text = new Text(screen.renderer, std::to_string(++scores[point]).c_str(), 50, SCREEN_HEIGHT / 2, 80, 67, 74, 84);
+		else if (point == 1)
+			score2_text = new Text(screen.renderer, std::to_string(++scores[point]).c_str(), SCREEN_WIDTH - 50, SCREEN_HEIGHT / 2, 80, 67, 74, 84);
 
-		update(screen.renderer, paddle1, paddle2, text, ball, fps_text);
+		update(screen.renderer, paddle1, paddle2, text, ball, fps_text, score1_text, score2_text);
 
 		SDL_UpdateWindowSurface(screen.window);
 		SDL_RenderPresent(screen.renderer);

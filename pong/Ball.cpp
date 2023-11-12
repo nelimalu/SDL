@@ -25,7 +25,7 @@ void Ball::reset() {
 	gone = false;
 }
 
-void Ball::handle_collision(Paddle* paddle1, Paddle* paddle2, int bounding_width) {
+int Ball::handle_collision(Paddle* paddle1, Paddle* paddle2, int bounding_width) {
 	if (x < paddle1->getX() + paddle1->getWidth() &&
 			y >= paddle1->getY() - sidelength &&
 			y <= paddle1->getY() + paddle1->getHeight() &&
@@ -47,20 +47,19 @@ void Ball::handle_collision(Paddle* paddle1, Paddle* paddle2, int bounding_width
 
 	if (x < -sidelength) {  // player 2 point
 		reset();
-		printf("PLAYER 2 POINT\n");
+		return 1;
 	}
 
 	if (x > bounding_width) {  // player 1 point
 		reset();
-		printf("PLAYER 1 POINT\n");
+		return 0;
 	}
+	return -1;
 }
 
-void Ball::move(Paddle* paddle1, Paddle* paddle2, int bounding_width, int bounding_height) {
+void Ball::move(int bounding_height) {
 	x += cos((double) (angle * 3.1415 / 180)) * speed;
 	y += sin((double) (angle * 3.1415 / 180)) * speed;
-
-	handle_collision(paddle1, paddle2, bounding_width);
 
 	// vertical
 	if (y < 0) {
