@@ -121,7 +121,7 @@ void mainloop(interface screen) {
 
 		paddle1->move(new bool[2] {keys[0], keys[1]});
 		paddle2->move(new bool[2] {keys[2], keys[3]});
-		ball->move();
+		ball->move(paddle1, paddle2, SCREEN_HEIGHT);
 
 		update(screen.renderer, paddle1, paddle2, text, ball, fps_text);
 

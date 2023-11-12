@@ -1,5 +1,4 @@
 #include "Ball.h"
-#include "Paddle.h"
 #include <stdio.h>
 
 Ball::Ball(double x, double y, int sidelength, int speed, int angle) {
@@ -10,17 +9,33 @@ Ball::Ball(double x, double y, int sidelength, int speed, int angle) {
 	this->angle = angle;
 }
 
-void Ball::move() {
+void Ball::horizontal_bounce() {
+	angle = (540 - angle) % 360;
+}
+
+void Ball::vertical_bounce() {
+	angle = (360 - angle) % 360;
+}
+
+void Ball::move(Paddle* paddle1, Paddle* paddle2, int bounding_height) {
 	x += cos((double) (angle * 3.1415 / 180)) * speed;
 	y += sin((double) (angle * 3.1415 / 180)) * speed;
 
 	if (x < 0) {
 		x = 0;
-		angle = (540 - angle) % 360;
+		horizontal_bounce();
 	}
-	if (x < 0) {
-		x = 0;
-		angle = (540 - angle) % 360;
+	if (x > 640) {  // todo change from 640
+		x = 640;
+		horizontal_bounce();
+	}
+	if (y < 0) {
+		y = 0;
+		vertical_bounce();
+	}
+	if (y > bounding_height) {
+		y = bounding_height;
+		vertical_bounce();
 	}
 }
 
