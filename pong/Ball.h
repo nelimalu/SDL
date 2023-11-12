@@ -5,14 +5,14 @@
 
 class Ball {
 	private:
-		int x;
-		int y;
+		double x;
+		double y;
 		int sidelength;
 		int speed;
 		int angle;
 
 	public:
-		Ball(int x, int y, int sidelength, int speed, int angle);
+		Ball(double x, double y, int sidelength, int speed, int angle);
 		void move();
 		void draw(SDL_Renderer* renderer);
 };

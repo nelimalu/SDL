@@ -58,9 +58,11 @@ void handle_keypress(SDL_KeyboardEvent key, bool keys[4], bool down) {
 }
 
 
-void update(SDL_Renderer* renderer, Paddle* paddle1, Paddle* paddle2, Text* text, Ball* ball) {
+void update(SDL_Renderer* renderer, Paddle* paddle1, Paddle* paddle2, Text* text, Ball* ball, int fps) {
 	drawRect(renderer, NULL, 43, 46, 51);
 	drawRect(renderer, createRect(SCREEN_WIDTH / 2, 70, 1, SCREEN_HEIGHT), 67, 74, 84);
+
+	Text* fps = new Text(screen.renderer, std::to_string(fps).c_str(), 10, 10, 10, 255, 255, 255);
 
 	paddle1->draw(renderer);
 	paddle2->draw(renderer);
@@ -77,19 +79,26 @@ void mainloop(interface screen) {
 	Paddle* paddle2 = new Paddle(SCREEN_WIDTH - 15, 10, 5, 75, SCREEN_HEIGHT);
 
 	int angle = randint(0, 359);
-	printf("%d\n", angle);
-	Ball* ball = new Ball(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 5, 2, angle);
+	Ball* ball = new Ball(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 5, 1, angle);
 
 	int x = 10;
 	int y = 10;
 
 	Text* text = new Text(screen.renderer, (char*) "PONG", 274, 2, 60, 67, 74, 84);
     
-    
+    int frames = 0;
+    int prev_time = time(0);
     bool run = true;
     SDL_Event event;
     while (run) {
-    	SDL_Delay(1);
+    	//SDL_Delay(1);
+    	
+    	frames++;
+    	if (prev_time < time(0)) {
+    		prev_time = time(0);
+
+    	}
+
     	while (SDL_PollEvent(&event)) {
     		switch (event.type){
                 case SDL_KEYDOWN:

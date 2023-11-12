@@ -1,7 +1,7 @@
 #include "Ball.h"
 #include <stdio.h>
 
-Ball::Ball(int x, int y, int sidelength, int speed, int angle) {
+Ball::Ball(double x, double y, int sidelength, int speed, int angle) {
 	this->x = x;
 	this->y = y;
 	this->sidelength = sidelength;
@@ -10,13 +10,11 @@ Ball::Ball(int x, int y, int sidelength, int speed, int angle) {
 }
 
 void Ball::move() {
-	double new_x = cos((double) (angle * 3.1415 / 180)) * speed;
-	double new_y = sin((double) (angle * 3.1415 / 180)) * speed;
-	x += (int) new_x;
-	y += (int) new_y;
+	x += cos((double) (angle * 3.1415 / 180)) * speed;
+	y += sin((double) (angle * 3.1415 / 180)) * speed;
 }
 
 
 void Ball::draw(SDL_Renderer* renderer) {
-	drawRect(renderer, createRect(x, y, sidelength, sidelength), 255, 255, 255);
+	drawRect(renderer, createRect((int) x, (int) y, sidelength, sidelength), 255, 255, 255);
 }
