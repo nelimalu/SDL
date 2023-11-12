@@ -15,6 +15,11 @@ struct interface {
     SDL_Renderer* renderer = NULL;
 };
 
+struct scores {
+	int score1 = 0;
+	int score2 = 0;
+};
+
 interface setup() {
     interface screen;
     SDL_Init(SDL_INIT_VIDEO);
@@ -31,12 +36,6 @@ void cleanup(interface screen) {
 	SDL_DestroyRenderer(screen.renderer);
 	SDL_DestroyWindow(screen.window);  // Destroy window
 	SDL_Quit();  // Quit SDL subsystems
-}
-
-int randint(int min, int max) {
-	std::mt19937 rng(time(0));
-	std::uniform_int_distribution<int> uni(0,359);
-	return uni(rng);
 }
 
 
@@ -74,11 +73,11 @@ void update(SDL_Renderer* renderer, Paddle* paddle1, Paddle* paddle2, Text* text
 void mainloop(interface screen) {
 	bool keys[] = {false, false, false, false};
 
-	Paddle* paddle1 = new Paddle(10, 10, 5, 75, SCREEN_HEIGHT);
+	Paddle* paddle1 = new Paddle(10, 10.0, 5, 75, SCREEN_HEIGHT);
 	Paddle* paddle2 = new Paddle(SCREEN_WIDTH - 15, 10, 5, 75, SCREEN_HEIGHT);
 
 	int angle = randint(0, 359);
-	Ball* ball = new Ball(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 5, 1, angle);
+	Ball* ball = new Ball(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 5, 0.5, angle);
 
 	int x = 10;
 	int y = 10;
@@ -121,7 +120,7 @@ void mainloop(interface screen) {
 
 		paddle1->move(new bool[2] {keys[0], keys[1]});
 		paddle2->move(new bool[2] {keys[2], keys[3]});
-		ball->move(paddle1, paddle2, SCREEN_HEIGHT);
+		ball->move(paddle1, paddle2, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 		update(screen.renderer, paddle1, paddle2, text, ball, fps_text);
 

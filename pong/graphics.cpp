@@ -1,5 +1,7 @@
 #include "graphics.h"
 #include <stdio.h>
+#include <random>
+#include <time.h>
 
 SDL_Rect* createRect(int x_, int y_, int width, int height) {
 	SDL_Rect* rect = new SDL_Rect;
@@ -14,6 +16,12 @@ SDL_Rect* createRect(int x_, int y_, int width, int height) {
 void drawRect(SDL_Renderer* renderer, SDL_Rect* rectangle, int r, int g, int b) {
 	SDL_SetRenderDrawColor(renderer, r, g, b, SDL_ALPHA_OPAQUE);
 	SDL_RenderFillRect(renderer, rectangle);
+}
+
+int randint(int min, int max) {
+	std::mt19937 rng(time(0));
+	std::uniform_int_distribution<int> uni(0,359);
+	return uni(rng);
 }
 
 

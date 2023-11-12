@@ -7,6 +7,7 @@
 
 SDL_Rect* createRect(int x, int y, int width, int height);
 void drawRect(SDL_Renderer* renderer, SDL_Rect* rectangle, int r, int g, int b);
+int randint(int min, int max);
 
 class Text {
 	private:
