@@ -72,8 +72,7 @@ void mainloop(interface screen) {
 	Paddle* paddle1 = new Paddle(10, 10.0, 5, 75, SCREEN_HEIGHT);
 	Paddle* paddle2 = new Paddle(SCREEN_WIDTH - 15, 10, 5, 75, SCREEN_HEIGHT);
 
-	int angle = randint(0, 359);
-	Ball* ball = new Ball(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 5, 0.5, angle);
+	Ball* ball = new Ball(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 5, 0.5);
 
 	int scores[2] = {0, 0}; 
 
