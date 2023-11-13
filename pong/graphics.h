@@ -24,6 +24,8 @@ class Text {
 	public:
 		Text(SDL_Renderer* renderer, const char* text, int x, int y, int size, int r, int g, int b);
 		void draw();
+		void update();
+		void setText(const char* text);
 
 	
 };

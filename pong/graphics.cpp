@@ -31,14 +31,22 @@ Text::Text(SDL_Renderer* renderer, const char* text, int x, int y, int size, int
 	this->y = y;
 	this->size = size;
 	this->renderer = renderer;
-
 	font = TTF_OpenFont("assets/BebasNeue-Regular.ttf", size);
 	colour = {(uint8_t)(r), (uint8_t)(g), (uint8_t)(b)};
+	update();
+}
+
+void Text::setText(const char* text) {
+	this->text = text;
+	update();
+}
+
+void Text::update() {
 	rect = createRect(x, y, 0, 0);
 	TTF_SizeText(font, text, &rect->w, &rect->h);
+	rect->x -= rect->w / 2;
 	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, text, colour); 
 	texture = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
-
 }
 
 void Text::draw() {
