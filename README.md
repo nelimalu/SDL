@@ -18,8 +18,9 @@ a customized run command can be found in RUN.bat, but it would need to be custom
 - [x] create paddles
 - [x] create ball
 - [x] implement collision
-- [ ] implement points
+- [x] implement points
 - [ ] create main menu
+- [ ] create singleplayer mode
 - [ ] implement shaders for graphics
 - [ ] add retro shader
 - [ ] make multiplayer using sockets (??)
