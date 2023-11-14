@@ -12,18 +12,19 @@ make sure that you have mingw installed and added to path
 
 a customized run command can be found in RUN.bat, but it would need to be customized depending on where your SDL files are located
 
-## todo
+# todo
 
-# pong
+## pong
 - [x] create paddles
 - [x] create ball
 - [x] implement collision
-- [ ] implement points
+- [x] implement points
 - [ ] create main menu
+- [ ] create singleplayer mode
 - [ ] implement shaders for graphics
 - [ ] add retro shader
 - [ ] make multiplayer using sockets (??)
 
-# future projects
+## future projects
 - ant slime simulation
 - something 3D with OpenGL
