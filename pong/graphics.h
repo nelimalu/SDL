@@ -26,7 +26,7 @@ class Text {
 		void draw();
 		void update();
 		void setText(const char* text);
-
+		void setColour(int r, int g, int b);
 	
 };
 

@@ -66,12 +66,59 @@ void update(SDL_Renderer* renderer, Paddle* paddle1, Paddle* paddle2, Text* text
 }
 
 
+void update_titlescreen(SDL_Renderer* renderer, Text* title, Text* singleplayer_text, Text* multiplayer_text, Text* online_text) {
+	drawRect(renderer, NULL, 43, 46, 51);
+
+	title->draw();
+	singleplayer_text->draw();
+	multiplayer_text->draw();
+	online_text->draw();
+}
+
+
+bool titlescreen(interface screen) {
+	Text* title = new Text(screen.renderer, (const char*) "PONG", SCREEN_WIDTH / 2, 20, 100, 255, 255, 255);
+	Text* singleplayer_text = new Text(screen.renderer, (const char*) "< singleplayer >", SCREEN_WIDTH / 2, 150, 60, 240, 240, 240);
+	Text* multiplayer_text = new Text(screen.renderer, (const char*) "< multiplayer >", SCREEN_WIDTH / 2, 220, 60, 240, 240, 240);
+	Text* online_text = new Text(screen.renderer, (const char*) "< online >", SCREEN_WIDTH / 2, 290, 60, 240, 240, 240);
+
+	bool run = true;
+    SDL_Event event;
+    while (run) {
+    	while (SDL_PollEvent(&event)) {
+    		switch (event.type) {
+                case SDL_QUIT:
+                    return false;
+                    break;
+
+                case SDL_MOUSEMOTION:
+                	printf("move\n");
+                	break;
+
+                case SDL_MOUSEBUTTONUP:
+                	return true;
+                	break;
+
+                default:
+                    break;
+            }
+    	}
+
+    	update_titlescreen(screen.renderer, title, singleplayer_text, multiplayer_text, online_text);
+
+    	SDL_UpdateWindowSurface(screen.window);
+		SDL_RenderPresent(screen.renderer);
+    }
+
+    return true;
+}	
+
+
 void mainloop(interface screen) {
 	bool keys[] = {false, false, false, false};
 
 	Paddle* paddle1 = new Paddle(10, 10.0, 5, 75, SCREEN_HEIGHT);
 	Paddle* paddle2 = new Paddle(SCREEN_WIDTH - 15, 10, 5, 75, SCREEN_HEIGHT);
-
 	Ball* ball = new Ball(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 5, 0.5);
 
 	int scores[2] = {0, 0}; 
@@ -136,7 +183,8 @@ int main(int argc, char* args[]) {
 	printf("[START] starting program\n");
 
 	interface screen = setup();
-	mainloop(screen);
+	if (titlescreen(screen))
+		mainloop(screen);
 	
 	cleanup(screen);
 	return 0;

@@ -32,12 +32,16 @@ Text::Text(SDL_Renderer* renderer, const char* text, int x, int y, int size, int
 	this->size = size;
 	this->renderer = renderer;
 	font = TTF_OpenFont("assets/BebasNeue-Regular.ttf", size);
-	colour = {(uint8_t)(r), (uint8_t)(g), (uint8_t)(b)};
-	update();
+	setColour(r, g, b);
 }
 
 void Text::setText(const char* text) {
 	this->text = text;
+	update();
+}
+
+void Text::setColour(int r, int g, int b) {
+	colour = {(uint8_t)(r), (uint8_t)(g), (uint8_t)(b)};
 	update();
 }
 
