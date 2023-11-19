@@ -8,6 +8,7 @@
 SDL_Rect* createRect(int x, int y, int width, int height);
 void drawRect(SDL_Renderer* renderer, SDL_Rect* rectangle, int r, int g, int b);
 int randint(int min, int max);
+bool rectCollision(int x, int y, SDL_Rect* rect);
 
 class Text {
 	private:
@@ -27,6 +28,7 @@ class Text {
 		void update();
 		void setText(const char* text);
 		void setColour(int r, int g, int b);
+		SDL_Rect* getRect();
 	
 };
 

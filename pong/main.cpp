@@ -8,6 +8,7 @@
 int SCREEN_WIDTH = 640;
 int SCREEN_HEIGHT = 480;
 const char* CAPTION = "PONG";
+int mouseX, mouseY;
 
 
 struct interface {
@@ -76,7 +77,17 @@ void update_titlescreen(SDL_Renderer* renderer, Text* title, Text* singleplayer_
 }
 
 
-bool titlescreen(interface screen) {
+void updateMousePosition(interface screen) {
+	int tempMouseX, tempMouseY, tempWindowX, tempWindowY;
+	SDL_GetGlobalMouseState(&tempMouseX, &tempMouseY);
+	SDL_GetWindowPosition(screen.window, &tempWindowX, &tempWindowY);
+	mouseX = tempMouseX - tempWindowX;
+	mouseY = tempMouseY - tempWindowY;
+}
+
+
+
+int titlescreen(interface screen) {
 	Text* title = new Text(screen.renderer, (const char*) "PONG", SCREEN_WIDTH / 2, 20, 100, 255, 255, 255);
 	Text* singleplayer_text = new Text(screen.renderer, (const char*) "< singleplayer >", SCREEN_WIDTH / 2, 150, 60, 240, 240, 240);
 	Text* multiplayer_text = new Text(screen.renderer, (const char*) "< multiplayer >", SCREEN_WIDTH / 2, 220, 60, 240, 240, 240);
@@ -88,20 +99,27 @@ bool titlescreen(interface screen) {
     	while (SDL_PollEvent(&event)) {
     		switch (event.type) {
                 case SDL_QUIT:
-                    return false;
+                    return 0;
                     break;
 
                 case SDL_MOUSEMOTION:
-                	printf("move\n");
+                	updateMousePosition(screen);
                 	break;
 
                 case SDL_MOUSEBUTTONUP:
-                	return true;
+                	if (rectCollision(mouseX, mouseY, singleplayer_text->getRect()))
+                		return 1;
                 	break;
 
                 default:
                     break;
             }
+    	}
+
+    	if (rectCollision(mouseX, mouseY, singleplayer_text->getRect())) {
+    		singleplayer_text->setColour(168, 168, 168);
+    	} else {
+    		singleplayer_text->setColour(255,255,255);
     	}
 
     	update_titlescreen(screen.renderer, title, singleplayer_text, multiplayer_text, online_text);
@@ -110,7 +128,7 @@ bool titlescreen(interface screen) {
 		SDL_RenderPresent(screen.renderer);
     }
 
-    return true;
+    return 0;
 }	
 
 
@@ -157,6 +175,10 @@ void mainloop(interface screen) {
                     run = false;
                     break;
 
+                case SDL_MOUSEMOTION:
+                	SDL_GetGlobalMouseState(&mouseX, &mouseY);
+                	break;
+
                 default:
                     break;
             }
@@ -183,7 +205,10 @@ int main(int argc, char* args[]) {
 	printf("[START] starting program\n");
 
 	interface screen = setup();
-	if (titlescreen(screen))
+
+	int gamemode = titlescreen(screen);
+
+	if (gamemode == 1)
 		mainloop(screen);
 	
 	cleanup(screen);

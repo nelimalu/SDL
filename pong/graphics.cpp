@@ -24,6 +24,10 @@ int randint(int min, int max) {
 	return uni(rng);
 }
 
+bool rectCollision(int x, int y, SDL_Rect* rect) {
+	return x >= rect->x && x <= rect->x + rect->w && y >= rect->y && y <= rect->y + rect->h;
+}
+
 
 Text::Text(SDL_Renderer* renderer, const char* text, int x, int y, int size, int r, int g, int b) {
 	this->text = text;
@@ -55,5 +59,9 @@ void Text::update() {
 
 void Text::draw() {
 	SDL_RenderCopy(renderer, texture, NULL, rect);
+}
+
+SDL_Rect* Text::getRect() {
+	return rect;
 }
 
