@@ -20,7 +20,7 @@ a customized run command can be found in RUN.bat, but it would need to be custom
 - [x] implement collision
 - [x] implement points
 - [x] create main menu
-- [ ] implement collision for main menu including highlights
+- [x] implement collision for main menu including highlights
 - [ ] countdown after pressing play
 - [ ] create singleplayer mode
 - [ ] implement shaders for graphics
