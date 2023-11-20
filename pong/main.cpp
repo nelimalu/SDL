@@ -141,7 +141,7 @@ void mainloop(interface screen) {
 
 	int scores[2] = {0, 0}; 
 
-	Text* text = new Text(screen.renderer, (const char*) "PONG", SCREEN_WIDTH / 2, 2, 60, 67, 74, 84);
+	Text* text = new Text(screen.renderer, (const char*) "3", SCREEN_WIDTH / 2, 2, 60, 235, 181, 106);
 	Text* fps_text = new Text(screen.renderer, (const char*) "--", SCREEN_WIDTH / 2, 65, 20, 67, 74, 84);
     Text* score_texts[2] = {
     	new Text(screen.renderer, (const char*) "0", SCREEN_WIDTH / 4, SCREEN_HEIGHT / 2 - 75, 150, 67, 74, 84),
@@ -150,6 +150,7 @@ void mainloop(interface screen) {
 
     int frames = 0;
     int prev_time = time(0);
+    int start_time = time(0);
     bool run = true;
     SDL_Event event;
     while (run) {
@@ -184,13 +185,21 @@ void mainloop(interface screen) {
             }
     	}
 
-
-		paddle1->move(new bool[2] {keys[0], keys[1]});
-		paddle2->move(new bool[2] {keys[2], keys[3]});
-		ball->move(SCREEN_HEIGHT);
-		int point = ball->handle_collision(paddle1, paddle2, SCREEN_WIDTH);
-		if (point != -1)
-			score_texts[point]->setText(std::to_string(++scores[point]).c_str());
+        if (time(0) < start_time + 4) {
+            text->setText(std::to_string(start_time + 4 - time(0)).c_str());
+        } else {
+            if (time(0) == start_time + 4) {
+                text->setText((const char*) "PONG");
+                text->setColour(67, 74, 84);
+            }
+            paddle1->move(new bool[2] {keys[0], keys[1]});
+            paddle2->move(new bool[2] {keys[2], keys[3]});
+            ball->move(SCREEN_HEIGHT);
+            int point = ball->handle_collision(paddle1, paddle2, SCREEN_WIDTH);
+            if (point != -1)
+                score_texts[point]->setText(std::to_string(++scores[point]).c_str());
+        }
+		
 		
 		update(screen.renderer, paddle1, paddle2, text, ball, fps_text, score_texts[0], score_texts[1]);
 
