@@ -21,7 +21,7 @@ a customized run command can be found in RUN.bat, but it would need to be custom
 - [x] implement points
 - [x] create main menu
 - [x] implement collision for main menu including highlights
-- [ ] countdown after pressing play
+- [x] countdown after pressing play
 - [ ] create singleplayer mode
 - [ ] implement shaders for graphics
 - [ ] add retro shader
