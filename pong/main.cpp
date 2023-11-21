@@ -193,7 +193,7 @@ void mainloop(interface screen) {
                 text->setColour(67, 74, 84);
             }
             paddle1->move(new bool[2] {keys[0], keys[1]});
-            paddle2->move(new bool[2] {keys[2], keys[3]});
+            paddle2->move(ball->getY());
             ball->move(SCREEN_HEIGHT);
             int point = ball->handle_collision(paddle1, paddle2, SCREEN_WIDTH);
             if (point != -1)

@@ -7,6 +7,14 @@ Paddle::Paddle(int x, double y, int width, int height, int boundingHeight) {
 	this->width = width;
 	this->height = height;
 	this->boundingHeight = boundingHeight;
+	this->isComputer = false;
+}
+
+void Paddle::checkBounds() {
+	if (y < 0)
+		y = 0;
+	if (y + height > boundingHeight)
+		y = boundingHeight - height;
 }
 
 void Paddle::move(bool keys[2]) {
@@ -15,10 +23,16 @@ void Paddle::move(bool keys[2]) {
 	if (keys[1])
 		y += speed;
 
-	if (y < 0)
-		y = 0;
-	if (y + height > boundingHeight)
-		y = boundingHeight - height;
+	checkBounds();
+}
+
+void Paddle::move(int ballHeight) {
+	if (ballHeight < y + height / 2)  // if ball is above center of paddle
+		y -= speed;
+	else if (ballHeight > y + height / 2)  // if ball is below center of paddle
+		y += speed;
+
+	checkBounds();
 }
 
 void Paddle::draw(SDL_Renderer* renderer) {

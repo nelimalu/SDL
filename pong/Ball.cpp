@@ -91,3 +91,7 @@ void Ball::move(int bounding_height) {
 void Ball::draw(SDL_Renderer* renderer) {
 	drawRect(renderer, createRect((int) x, (int) y, sidelength, sidelength), 255, 255, 255);
 }
+
+int Ball::getY() {
+	return y;
+}

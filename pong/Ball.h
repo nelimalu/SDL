@@ -24,6 +24,7 @@ class Ball {
 		void reset();
 		void initAngle();
 		void speedUp();
+		int getY();
 };
 
 
