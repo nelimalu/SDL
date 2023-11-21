@@ -1,6 +1,8 @@
 #include "Ball.h"
 #include <stdio.h>
 
+const int spice = 20;
+
 Ball::Ball(double x, double y, int sidelength, double speed) {
 	this->x = x;
 	this->y = y;
@@ -20,15 +22,16 @@ void Ball::initAngle() {
 
 void Ball::speedUp() {
 	speed += 0.01;
+	printf("hi\n");
 }
 
 void Ball::horizontal_bounce() {
-	angle = (540 - angle) % 360;
+	angle = (540 - angle + randint(-spice, spice)) % 360;
 	speedUp();
 }
 
 void Ball::vertical_bounce() {
-	angle = (360 - angle) % 360;
+	angle = (360 - angle + randint(-spice, spice)) % 360;
 	speedUp();
 }
 

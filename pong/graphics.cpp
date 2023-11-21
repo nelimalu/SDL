@@ -20,7 +20,7 @@ void drawRect(SDL_Renderer* renderer, SDL_Rect* rectangle, int r, int g, int b) 
 
 int randint(int min, int max) {
 	std::mt19937 rng(time(0));
-	std::uniform_int_distribution<int> uni(0,359);
+	std::uniform_int_distribution<int> uni(min,max);
 	return uni(rng);
 }
 

@@ -7,7 +7,6 @@ Paddle::Paddle(int x, double y, int width, int height, int boundingHeight) {
 	this->width = width;
 	this->height = height;
 	this->boundingHeight = boundingHeight;
-	this->isComputer = false;
 }
 
 void Paddle::checkBounds() {
