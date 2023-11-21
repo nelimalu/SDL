@@ -23,6 +23,8 @@ a customized run command can be found in RUN.bat, but it would need to be custom
 - [x] implement collision for main menu including highlights
 - [x] countdown after pressing play
 - [x] create singleplayer mode
+- [x] game over at seven points
+- [ ] two bots playing at for homescreen background
 - [ ] implement shaders for graphics
 - [ ] add retro shader
 - [ ] make multiplayer using sockets (??)
