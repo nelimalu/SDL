@@ -35,6 +35,9 @@ Text::Text(SDL_Renderer* renderer, const char* text, int x, int y, int size, int
 	this->y = y;
 	this->size = size;
 	this->renderer = renderer;
+	this->default_red = r;
+	this->default_blue = b;
+	this->default_green = g;
 	font = TTF_OpenFont("assets/BebasNeue-Regular.ttf", size);
 	setColour(r, g, b);
 }
@@ -55,6 +58,13 @@ void Text::update() {
 	rect->x -= rect->w / 2;
 	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, text, colour); 
 	texture = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+}
+
+void Text::hover(int x, int y, int r, int g, int b) {
+	if (rectCollision(x, y, getRect()))
+		setColour(r, g, b);
+	else
+		setColour(default_red, default_green, default_blue);
 }
 
 void Text::draw() {

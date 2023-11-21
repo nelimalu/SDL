@@ -16,6 +16,9 @@ class Text {
 		int x;
 		int y;
 		int size;
+		int default_red;
+		int default_green;
+		int default_blue;
 		SDL_Color colour;
 		SDL_Rect* rect;
 		SDL_Texture* texture;
@@ -28,6 +31,7 @@ class Text {
 		void update();
 		void setText(const char* text);
 		void setColour(int r, int g, int b);
+		void hover(int x, int y, int r, int g, int b);
 		SDL_Rect* getRect();
 	
 };

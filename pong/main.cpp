@@ -118,13 +118,8 @@ int titlescreen(interface screen) {
             }
     	}
 
-    	if (rectCollision(mouseX, mouseY, singleplayer_text->getRect())) {
-    		singleplayer_text->setColour(168, 168, 168);
-    	} else {
-    		singleplayer_text->setColour(255,255,255);
-    	}
-
-        
+        singleplayer_text->hover(mouseX, mouseY, 168, 168, 168);
+        multiplayer_text->hover(mouseX, mouseY, 168, 168, 168);
 
     	update_titlescreen(screen.renderer, title, singleplayer_text, multiplayer_text, online_text);
 
