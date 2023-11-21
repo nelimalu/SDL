@@ -109,6 +109,8 @@ int titlescreen(interface screen) {
                 case SDL_MOUSEBUTTONUP:
                 	if (rectCollision(mouseX, mouseY, singleplayer_text->getRect()))
                 		return 1;
+                    if (rectCollision(mouseX, mouseY, multiplayer_text->getRect()))
+                        return 2;
                 	break;
 
                 default:
@@ -122,6 +124,8 @@ int titlescreen(interface screen) {
     		singleplayer_text->setColour(255,255,255);
     	}
 
+        
+
     	update_titlescreen(screen.renderer, title, singleplayer_text, multiplayer_text, online_text);
 
     	SDL_UpdateWindowSurface(screen.window);
@@ -132,7 +136,7 @@ int titlescreen(interface screen) {
 }	
 
 
-void mainloop(interface screen) {
+void mainloop(interface screen, int gamemode) {
 	bool keys[] = {false, false, false, false};
 
 	Paddle* paddle1 = new Paddle(10, SCREEN_HEIGHT / 2 - 75 / 2, 5, 75, SCREEN_HEIGHT);
@@ -193,7 +197,12 @@ void mainloop(interface screen) {
                 text->setColour(67, 74, 84);
             }
             paddle1->move(new bool[2] {keys[0], keys[1]});
-            paddle2->move(ball->getY());
+
+            if (gamemode == 1)
+                paddle2->move(ball->getY());
+            if (gamemode == 2)
+                paddle2->move(new bool[2] {keys[2], keys[3]});
+
             ball->move(SCREEN_HEIGHT);
             int point = ball->handle_collision(paddle1, paddle2, SCREEN_WIDTH);
             if (point != -1)
@@ -217,8 +226,7 @@ int main(int argc, char* args[]) {
 
 	int gamemode = titlescreen(screen);
 
-	if (gamemode == 1)
-		mainloop(screen);
+	mainloop(screen, gamemode);
 	
 	cleanup(screen);
 	return 0;

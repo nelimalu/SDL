@@ -22,7 +22,6 @@ void Ball::initAngle() {
 
 void Ball::speedUp() {
 	speed += 0.01;
-	printf("hi\n");
 }
 
 void Ball::horizontal_bounce() {
