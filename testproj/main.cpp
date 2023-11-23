@@ -1,4 +1,4 @@
-#include <SDL.h>
+#include <SDL2.h>
 #include <stdio.h>
 #include <typeinfo>
 #include "graphics.h"
