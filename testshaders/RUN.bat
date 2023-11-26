@@ -1,1 +1,1 @@
-g++ main.cpp -IC:\cpp_libs\SDL\include\SDL2 -LC:\cpp_libs\SDL\lib -lmingw32 -lSDL2main -lSDL2 -lGL -o run && run
+g++ main.cpp -IC:\cpp_libs\SDL\include\SDL2 -LC:\cpp_libs\SDL\lib -IC:\cpp_libs\SDL_GPU\include -LC:\cpp_libs\SDL_GPU\lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_gpu -o run && run
